@@ -7,7 +7,7 @@ export const SuperHeroesPage = () => {
   const [error, setError] = useState('')
 
   useEffect(() => {
-    //전통적인 data fetching 방법
+    //전통적인 data fetching,loading,에러 처리방법
     axios
       .get("http://localhost:4000/superheroes")
       .then((res) => {

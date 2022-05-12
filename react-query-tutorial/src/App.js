@@ -1,6 +1,6 @@
 import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom'
 import { QueryClientProvider, QueryClient } from 'react-query'
-import { ReactQueryDevtools } from 'react-query/devtools'
+import { ReactQueryDevtools } from 'react-query/devtools' //react-query-devtools (useQuery에 등록한 key값이 저장됨)
 import './App.css'
 import { HomePage } from './components/Home.page'
 import { RQSuperHeroesPage } from './components/RQSuperHeroes.page'
@@ -64,7 +64,7 @@ function App() {
           </Switch>
         </div>
       </Router>
-      <ReactQueryDevtools initialIsOpen={false} position='bottom-right' />
+      <ReactQueryDevtools initialIsOpen={false} position='bottom-right' /> {/* devtools 적용 */}
     </QueryClientProvider>
   )
 }
