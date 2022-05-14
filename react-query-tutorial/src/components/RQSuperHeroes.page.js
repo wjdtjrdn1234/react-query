@@ -1,8 +1,5 @@
 import { useState } from "react";
-import {
-  useAddSuperHeroData,
-  useSuperHeroesData,
-} from "../hooks/useSuperHeroesData";
+import { useAddSuperHeroData,useSuperHeroesData,} from "../hooks/useSuperHeroesData";
 import { Link } from "react-router-dom";
 import { useQuery, useQueryClient } from 'react-query'
 import axios from 'axios'
@@ -36,15 +33,22 @@ export const RQSuperHeroesPage = () => {
   //단순 axios를 사용하면 접속할떄마다 데이터요청을 하지만 react-query는 값이 안바뀌면 캐싱하고 다시요청하지않음(default 5분동안 캐시 )
   //단순 axios는 db에 data값이 변경될경우 재접속해야되지만, react-query는 실시간으로 변경됨
   //stale : 서버에서 한번 프론트로 데이터를 주면 그 사이에 다른 유저가 데이터를 추가, 수정, 삭제 등등 할 수 있기 때문에 만료되었다고 한다. (최신화가 필요한 데이터)
-  const { isLoading,isFetching, data, isError, error, refetch } = useQuery("super-heroes", () => {//key , promise반환하는 함수
-    return axios.get(`http://localhost:4000/superheroes`);
-  },
-  {
-    cacheTime:5000, //캐시시간 5초로 설정(default 5분동안 캐시 )
-    staleTime:5000 //데이터가 fresh -> stale 상태로 변경되는데 걸리는 시간 //이 캐시 데이터의 "신선한 상태"가 언제까지 될지를 말해주는 옵션이다. 
-                  // default는 0이고 , 받아오는 즉시 stale 하다고 판단하며 캐싱 데이터와 무관하게 계속해서 fetching을 수행한다
-                  //즉 fresh 상태일떄는 db data가 변하든말든 request를 보내지않음
-  }
+  const { isLoading, isFetching, data, isError, error, refetch } = useQuery(
+    "super-heroes",
+    () => {
+      //key , promise반환하는 함수
+      return axios.get(`http://localhost:4000/superheroes`);
+    },
+    {
+      cacheTime: 5000, //캐시시간 5초로 설정(default 5분동안 캐시)
+      staleTime: 5000, //데이터가 fresh -> stale 상태로 변경되는데 걸리는 시간 //이 캐시 데이터의 "신선한 상태"가 언제까지 될지를 말해주는 옵션이다.
+      refetchInterval:2000, //데이터 변경시 fetch하는시간 // default:false : db 데이터값 변경하면 즉시 변경
+ 
+      // default는 0이고 , 받아오는 즉시 stale 하다고 판단하며 캐싱 데이터와 무관하게 계속해서 fetching을 수행한다
+      //즉 fresh 상태일떄는 db data가 변하든말든 request를 보내지않음
+      // refetchOnMount: false, //true면 접속할때마다 데이터요청을함(전통적인방식) default: false
+      // refetchOnWindowFocus:true , //true면 데이터 변경시 화면에 바로 바뀜 ,default:true
+    }
   );
   console.log('isLoading:',isLoading,'isFetching:',isFetching) 
 
